@@ -94,6 +94,7 @@ io.on("connection", function (socket) {
                 idNodoDesde: clientId, // Id del nodo que esta enviando el mensaje
                 idNodoDestinoFinal: idNodoDestinoFinal, // Id del nodo destino final
                 mensaje: mensaje, // Mensaje que se le quiere enviar
+                extra: data.extra !== undefined ? data.extra : undefined // Cualquier cosa que se desea pasar al receptor
             })
         } else {
             socket.emit('error-msj', {mensaje: "El id del nodo destino no existe."})
