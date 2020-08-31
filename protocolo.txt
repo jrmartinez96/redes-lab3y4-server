@@ -14,6 +14,7 @@ Protocolo para lab
     idNodoDesde: clientId, // Id del nodo que esta enviando el mensaje
     idNodoDestinoFinal: "", // Id del nodo destino final
     mensaje: "", // Mensaje que se le quiere enviar
+    extra: {} // Cualquier cosa que se desea pasar al receptor
 }
 
 - "error-msj" (cuando el servidor le manda un error al cliente)
@@ -41,4 +42,5 @@ Protocolo para lab
     idNodoOrigen: "", // Id del nodo origen
     idNodoDestinoFinal: "", // Id del nodo destino final
     mensaje: "", // Mensaje que se le quiere enviar
+    extra: {} // Cualquier cosa que se desea pasar al receptor
 }

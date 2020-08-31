@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const Nodo = require("./classes/Nodo");
 
 // App setup
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const app = express();
 const server = app.listen(PORT, function () {
     console.log(`Listening on port ${PORT}`);
@@ -94,6 +94,7 @@ io.on("connection", function (socket) {
                 idNodoDesde: clientId, // Id del nodo que esta enviando el mensaje
                 idNodoDestinoFinal: idNodoDestinoFinal, // Id del nodo destino final
                 mensaje: mensaje, // Mensaje que se le quiere enviar
+                extra: data.extra !== undefined ? data.extra : undefined // Cualquier cosa que se desea pasar al receptor
             })
         } else {
             socket.emit('error-msj', {mensaje: "El id del nodo destino no existe."})
