@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const Nodo = require("./classes/Nodo");
 
 // App setup
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const app = express();
 const server = app.listen(PORT, function () {
     console.log(`Listening on port ${PORT}`);
