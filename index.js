@@ -15,6 +15,7 @@ const server = app.listen(PORT, function () {
 const io = socket(server, {pingTimeout: 1000000});
 
 const nodos = []
+const aristas = []
 
 io.on("connection", function (socket) {
     console.log("Made socket connection");
@@ -29,7 +30,7 @@ io.on("connection", function (socket) {
         socket.emit('node-connect-complete',{id: clientId, nombre: data.nombre})
 
         nodos.forEach(nodoObj => {
-            nodoObj.socket.emit('actualizacion-red', {nodos: nodos.map(n => n.getInfo(true))})
+            nodoObj.socket.emit('actualizacion-red', {nodos: nodos.map(n => n.getInfo(true)), aristas: aristas})
         })
     });
 
@@ -60,6 +61,8 @@ io.on("connection", function (socket) {
     
                 nodo2.addVecino(nodo1);
                 nodo2.setVecinoPeso(idNodo1, peso);
+
+                aristas.push({from: nodo1.getInfo(false), to: nodo2.getInfo(false), peso: peso})
             } else {
                 nodo1.deleteVecino(nodo2.id);
                 nodo2.deleteVecino(nodo1.id);
@@ -67,7 +70,7 @@ io.on("connection", function (socket) {
 
 
             nodos.forEach(nodoObj => {
-                nodoObj.socket.emit('actualizacion-red', {nodos: nodos.map(n => n.getInfo(true))})
+                nodoObj.socket.emit('actualizacion-red', {nodos: nodos.map(n => n.getInfo(true)), aristas: aristas})
             })
         } else {
             socket.emit('error-msj', {mensaje: "Alguno de los id son inválidos o son iguales."})
@@ -94,6 +97,7 @@ io.on("connection", function (socket) {
                 idNodoDesde: clientId, // Id del nodo que esta enviando el mensaje
                 idNodoDestinoFinal: idNodoDestinoFinal, // Id del nodo destino final
                 mensaje: mensaje, // Mensaje que se le quiere enviar
+                // aristas: aristas,
                 extra: data.extra !== undefined ? data.extra : undefined // Cualquier cosa que se desea pasar al receptor
             })
         } else {
@@ -116,7 +120,7 @@ io.on("connection", function (socket) {
             nodos.splice(nodoIndex, 1);
     
             nodos.forEach(nodoObj => {
-                nodoObj.socket.emit('actualizacion-red', {nodos: nodos.map(n => n.getInfo(true))})
+                nodoObj.socket.emit('actualizacion-red', {nodos: nodos.map(n => n.getInfo(true)), aristas: aristas})
             })
         }
 
